@@ -11,16 +11,29 @@ import UIKit
 class TableViewController: UITableViewController {
     
     
-    let profiles = ["Profile-App-1Kiosk 123 Genius PRO - First Numbers and Counting Games2", "Profile-App-1Kiosk ABC - Magnetic Alphabet HD for Kids3", "Profile-App-1Kiosk ABC Genius PRO - Alphabet Letters Phonics Handwriting1", "Profile-App-1Kiosk Alphabet Sounds Word Study4", "Profile-App-1Kiosk Butterfly Math2", "Profile-App-1Kiosk Categories - Categorization Skill Development App3", "Profile-App-1Kiosk Count, Sort and Match5", "Profile-App-1Kiosk Counting Bear - Easily Learn How to Count4", "Profile-App-1Kiosk Counting Dots: Number Practice2", "Profile-App-1Kiosk Doodle Buddy Paint Draw App3", "Profile-App-1Kiosk Draw and Tell HD5", "Profile-App-1Kiosk Endless Alphabet3", "Profile-App-1Kiosk Feed the Monkey1"]
-    
+    let profiles = ["Profile-App-1Kiosk 123 Genius PRO - First Numbers and Counting Games~#2", "Profile-App-1Kiosk ABC - Magnetic Alphabet HD for Kids~#3", "Profile-App-1Kiosk ABC Genius PRO - Alphabet Letters Phonics Handwriting~#1", "Profile-App-1Kiosk Alphabet Sounds Word Study~#4", "Profile-App-1Kiosk Butterfly Math~#2", "Profile-App-1Kiosk Categories - Categorization Skill Development App~#0", "Profile-App-1Kiosk Count, Sort and Match~#5", "Profile-App-1Kiosk Counting Bear - Easily Learn How to Count~#4", "Profile-App-1Kiosk Counting Dots: Number Practice~#2", "Profile-App-1Kiosk Doodle Buddy Paint Draw App~#3", "Profile-App-1Kiosk Draw and Tell HD~#5", "Profile-App-1Kiosk Endless Alphabet~#3", "Profile-App-1Kiosk Feed the Monkey~#1"]
+
     var prf: [String] = []
 
+    var prfSections = Array(repeating: Array<String>(), count: 6)
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        profiles.forEach { (item) in
+            let itemArr = item.components(separatedBy: "~#")
+            prfSections[Int(itemArr[1])!].append(itemArr[0])
+        }
+        
         
         prf = profiles.map {
              String($0.suffix(1) + $0.replacingOccurrences(of: "Profile-App-1Kiosk", with: "").dropLast(1))
         }.sorted()
+        
+        
+        
         
 //        prf = profiles.map {
 //            "-" + $0.replacingOccurrences(of: "Profile-App-1Kiosk", with: "")
@@ -37,23 +50,30 @@ class TableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return prfSections.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return profiles.count
+        return prfSections[section].count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-        cell.textLabel?.text = String(prf[indexPath.row].dropFirst(2))
+        //cell.textLabel?.text = String(prf[indexPath.row].dropFirst(2))
+        print(indexPath.section)
+        print(indexPath.row)
+        cell.textLabel?.text = prfSections[indexPath.section][indexPath.row]
         
 
         // Configure the cell...
 
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return String(section)
     }
     
 
